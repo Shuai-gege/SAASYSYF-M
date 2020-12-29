@@ -1,5 +1,6 @@
 <template>
   <div class="box">
+    <van-nav-bar title="账号信息" left-text="返回" left-arrow :fixed="true" @click-left="fanHui" />
     <!-- 申请前 -->
     <div class="con" v-if="flag1">
       <div class="title">请选择您要加入的企业</div>
@@ -20,11 +21,11 @@
         </ul>
       </div>
       <div class="buMen flex_c">
-        <van-field v-model="value1" placeholder="请填写选择您要加入的部门" />
+        <van-field v-model="value1" placeholder="请填写您要加入的部门" />
       </div>
       <!-- 按钮 -->
       <div class="btn1 flex_c">
-        <van-button type="primary" size="large" color="#64A5DC" @click="adminTransfer">申请</van-button>
+        <van-button type="primary" size="large" color="#1888F9" @click="adminTransfer">申请</van-button>
       </div>
     </div>
     <!-- 申请后 -->
@@ -34,7 +35,7 @@
       </div>
       <!-- 按钮 -->
       <div class="btn flex_c">
-        <van-button type="primary" size="large" color="#64A5DC" @click="$router.push('/login')">完成</van-button>
+        <van-button type="primary" size="large" color="#1888F9" @click="$router.push('/login')">完成</van-button>
       </div>
     </div>
   </div>
@@ -69,12 +70,24 @@ export default {
         })
     },
     shaiXuan(val) {
+      console.log(val)
       this.allUserList1 = []
-      this.allUserList.forEach(item => {
-        if (item.name.indexOf(val) >= 0) {
-          console.log('我看看你执行几次')
-          this.flag = true
-          this.allUserList1.push(item)
+      if (val == '') {
+        this.flag = false
+      } else {
+        this.allUserList.forEach(item => {
+          if (item.name.indexOf(val) >= 0) {
+            this.flag = true
+            this.allUserList1.push(item)
+          }
+        })
+      }
+    },
+    fanHui() {
+      this.$router.push({
+        name: 'register1',
+        query: {
+          flag1: true
         }
       })
     },
@@ -111,6 +124,7 @@ export default {
 .box {
   min-height: 100vh;
   color: black;
+  padding-top: 45px;
   font-size: 14px;
   background-image: linear-gradient(#fff, rgb(9, 63, 112));
   .con {
@@ -148,7 +162,7 @@ export default {
         width: 330px;
         height: 190px;
         position: absolute;
-        top: 190px;
+        top: 235px;
         overflow: auto;
         li {
           padding: 3px 6px;

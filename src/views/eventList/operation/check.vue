@@ -72,16 +72,16 @@
       <!-- 评价 -->
       <div v-if="flag">
         <div class="maxBox flex">
-          <p>{{data[0].assessType}}</p>
-          <van-rate v-model="data[0].value" :count="10" @change="pingFen" />
+          <p>{{data1[0].assessType}}</p>
+          <van-rate v-model="data1[0].value" :count="10" @change="pingFen" />
         </div>
         <div class="maxBox flex">
-          <p>{{data[1].assessType}}</p>
-          <van-rate v-model="data[1].value" :count="10" @change="pingFen1" />
+          <p>{{data1[1].assessType}}</p>
+          <van-rate v-model="data1[1].value" :count="10" @change="pingFen1" />
         </div>
         <div class="maxBox flex">
-          <p>{{data[2].assessType}}</p>
-          <van-rate v-model="data[2].value" :count="10" @change="pingFen2" />
+          <p>{{data1[2].assessType}}</p>
+          <van-rate v-model="data1[2].value" :count="10" @change="pingFen2" />
         </div>
       </div>
     </div>
@@ -116,7 +116,7 @@ export default {
       wuLiaoList: [], //物料类型列表
       wuLiaoList1: [], //物料名字列表
       meterials_use: [], //物料格式
-      data: [],
+      data1: [],
       base64: '', //图片格式
       base64Arr: [], //图片格式
       tuName: '', //图片名字
@@ -148,7 +148,7 @@ export default {
       })
       .then(data => {
         console.log(data)
-        this.data = data.rows
+        this.data1 = data.rows
       })
   },
   methods: {

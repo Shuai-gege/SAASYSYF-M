@@ -1,15 +1,8 @@
 <template>
   <div class="box">
     <div class="con">
-      <van-cell-group>
-        <van-field
-          v-for="(item,i) in arr"
-          :key="i"
-          v-model="item.money"
-          :label="item.name"
-          placeholder="请输入用户名"
-        />
-      </van-cell-group>
+      <a :href="url">扫描</a>
+      <h1>{{query}}</h1>
     </div>
   </div>
 </template>
@@ -18,14 +11,27 @@
 export default {
   data() {
     return {
-      arr: [
-        { money: '50', name: '老张' },
-        { money: '30', name: '小张' },
-        { money: '10', name: '小小张' }
-      ]
+      query: '接手前的参数',
+      url: ''
     }
   },
-  mounted() {},
+  mounted() {
+    let baseUrl = window.location.href
+    this.url =
+      'http://sao315.com/w/api/saoyisao?redirect_uri=' + escape(baseUrl)
+
+    var qr = GetQueryString('qrresult')
+    if (qr) {
+      //alert(qr);
+      this.query = qr
+    }
+
+    function GetQueryString(name) {
+      var reg = new RegExp('\\b' + name + '=([^&]*)')
+      var r = location.href.match(reg)
+      if (r != null) return decodeURIComponent(r[1])
+    }
+  },
   methods: {}
 }
 </script>

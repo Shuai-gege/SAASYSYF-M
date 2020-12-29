@@ -206,7 +206,7 @@
 import MescrollVue from 'mescroll.js/mescroll.vue' //下拉刷新，上拉加载
 import { WXsao, getvl, base } from '../../common/wx_config' //跳转小程序页面
 import wx from 'weixin-js-sdk'
-import { WXConfigApi } from '@/api/wxApi'
+import { WXInit } from '@/common/wx_config'
 export default {
   components: {
     MescrollVue // 注册mescroll组件
@@ -263,7 +263,7 @@ export default {
     }
   },
   mounted() {
-    this.WXInit()
+    WXInit()
     let obj = getvl('event')
     localStorage.setItem('keepWatchId', this.$route.query.id)
     this.taskId = localStorage.getItem('keepWatchId')
@@ -283,34 +283,6 @@ export default {
     }
   },
   methods: {
-    WXInitConfig(WxToken) {
-      wx.config({
-        debug: false,
-        appId: WxToken.appId,
-        timestamp: WxToken.timestamp,
-        nonceStr: WxToken.nonceStr,
-        signature: WxToken.signature,
-        jsApiList: ['scanQRCode', 'chooseImage', 'getLocalImgData']
-      })
-      // error callback
-      wx.error(function(result) {
-        console.log('WX INIT ERROR:', result, 'color: red; font-size: 20px')
-      })
-      // ready callback
-      wx.ready(function() {})
-    },
-    WXInit() {
-      let WxToken = {}
-      WXConfigApi(window.location.href.split('#')[0])
-        // url: window.location.href.split('#')[0],
-        .then(response => {
-          WxToken = response
-          this.WXInitConfig(WxToken)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
     mescrollInit(mescroll) {
       this.mescroll = mescroll // 如果this.mescroll对象没有使用到,则mescrollInit可以不用配置
     },

@@ -135,7 +135,7 @@
         />
         <van-grid-item
           icon="https://s1.ax1x.com/2020/05/09/YQ5UMT.png"
-          to="keepWatch"
+          @click="xunGeng"
           text="巡更任务"
           :badge="xunGengNum"
         />
@@ -149,6 +149,7 @@ import { mapState, mapActions } from 'vuex'
 import moment from 'moment'
 import axios from 'axios'
 import { getEventNum } from '@/api/eventApi'
+import { WXInit } from '@/common/wx_config'
 export default {
   data() {
     return {
@@ -176,7 +177,15 @@ export default {
   },
   mounted() {
     localStorage.setItem('ciShu', 0)
-    this.comparison(localStorage.getItem('openid'))
+    if (localStorage.getItem('openid') == '[object Object]') {
+      window.localStorage.clear()
+      this.$router.push('/login')
+    } else {
+      this.comparison(localStorage.getItem('openid'))
+      console.log(typeof localStorage.getItem('openid'))
+      console.log('上面是optionID')
+    }
+
     this.axios
       .get('/rest/tbEventReport/authRcEvent', {
         params: {
@@ -233,6 +242,10 @@ export default {
       })
   },
   methods: {
+    xunGeng() {
+      this.$router.push('keepWatch')
+      WXInit()
+    },
     ...mapActions(['setEvent']),
     checkoutEvent() {
       this.setEvent({
@@ -253,13 +266,14 @@ export default {
       this.$router.push({
         name: 'spotCheck'
       })
+      WXInit()
     },
     // 是否有权限进入日常分配
     dayTask() {
       if (this.jurisdiction) {
         this.$router.push('/dayTask')
       } else {
-        this.$toast('你没有权限~')
+        this.$toast('暂无权限，如需使用请联系系统管理员')
       }
     },
     my() {

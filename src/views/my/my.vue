@@ -57,6 +57,7 @@ export default {
         })
         .then(data => {
           this.$toast('已退出')
+          this.$cookieStore.setCookie('uid', localStorage.getItem('uid'), 30)
           window.localStorage.clear()
           this.$router.push('/login')
         })

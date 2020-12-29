@@ -1,6 +1,6 @@
 <template>
   <div class="box">
-    <van-nav-bar title="点检任务" left-text="首页" @click-left="onClickLeft" left-arrow>
+    <van-nav-bar title="用户审核" left-text="首页" @click-left="onClickLeft" left-arrow>
       <template #right>
         <van-icon name="filter-o" size="18" @click="isShow" />
       </template>

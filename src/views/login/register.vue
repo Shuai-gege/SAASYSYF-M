@@ -8,7 +8,7 @@
     <!-- 已注册但是未超过两人 -->
     <div class="registered" v-if="flag1">
       <div class="title">您已是{{firmName}}企业的管理员了</div>
-      <div class="con">由于您的企业人员未超过2人，您可以选择重新创建新的企业，之前创建的企业将会在系统内清除</div>
+      <div class="con">由于您的企业人员少于2人，您可以选择重新创建新的企业，之前创建的企业将会在系统内清除</div>
       <!-- 按钮 -->
       <div class="btn flex_c">
         <van-button type="primary" size="large" color="#64A5DC" @click="newQiYe">创建新的企业</van-button>
@@ -33,6 +33,19 @@
       <div class="title">您已是{{firmName}}企业的成员了</div>
       <div class="con">请联系您所属企业的平台管理员注销您的账号后才可注册/加入新的企业</div>
     </div>
+    <!-- 申请加入企业还未审核 -->
+    <div class="registered" v-if="flag4">
+      <div class="title">您已申请加入{{firmName}}的企业，等待审核</div>
+      <!-- 按钮 -->
+      <div class="btn flex_c">
+        <van-button
+          type="primary"
+          size="large"
+          color="#64A5DC"
+          @click="$router.push('/introduce')"
+        >确定</van-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -44,6 +57,7 @@ export default {
       flag: false, //已注册
       flag1: false, //已注册未超过两人
       flag3: false, //已注册超过两人
+      flag4: false, //申请加入企业还未审核
       flag2: false //未注册
     }
   },
@@ -53,11 +67,17 @@ export default {
     this.flag1 = this.$route.params.flag1
     this.flag2 = this.$route.params.flag2
     this.flag3 = this.$route.params.flag3
+    this.flag4 = this.$route.params.flag4
   },
   methods: {
     // 创建新的企业
     newQiYe() {
-      this.$router.push('/newFirm')
+      this.$router.push({
+        name: 'register1',
+        query: {
+          flag1: true
+        }
+      })
     }
   }
 }

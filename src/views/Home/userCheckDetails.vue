@@ -60,17 +60,7 @@
         <span>用户赋权:</span>
         <span v-if="userArr.length == 0">请登录PC端设置用户权限角色</span>
         <span v-else>
-          <select
-            name="quanXian"
-            id
-            v-model="selectItem"
-            @change="abc($event)"
-            style="width: 218px;
-                    height: 38px;
-                    font-size: 16px;
-                    border-radius: 6px;
-                    border-color: #dcdcdc;"
-          >
+          <select name="quanXian" id="userQX" v-model="selectItem" @change="abc($event)">
             <option v-for="(item,i) in userArr" :key="i" :value="item.id">{{item.name}}</option>
           </select>
         </span>
@@ -153,23 +143,56 @@ export default {
       this.buMenId = node.id.toString()
     },
     end(num) {
-      this.keepAxios
-        .post(this.baseUrl.checkList + '/rest/appUser/auditingApply', {
-          applyRemark: this.message, // 审核信息 ,
-          deptId: this.buMenId, // 分配部门id ,
-          registerApplyId: this.obj.id, // 申请数据id ,
-          roleId: this.userId, // 角色id ,
-          status: num // 审核状态 1：审核通过 2：审核拒绝
-        })
-        .then(data => {
-          console.log(data)
-          if (data.data.code == 20000) {
-            this.$toast(data.data.msg)
-            this.$router.push('/userCheck')
-          } else {
-            this.$toast(data.data.msg)
-          }
-        })
+      this.$toast.loading({
+        message: '',
+        forbidClick: true,
+        loadingType: 'spinner'
+      })
+      if (num == '1') {
+        if (this.buMenId == '') {
+          this.$toast('请选择部门')
+        } else if (this.userId == '') {
+          this.$toast('请选择角色')
+        } else {
+          this.keepAxios
+            .post(this.baseUrl.checkList + '/rest/appUser/auditingApply', {
+              applyRemark: this.message, // 审核信息 ,
+              deptId: this.buMenId, // 分配部门id ,
+              registerApplyId: this.obj.id, // 申请数据id ,
+              roleId: this.userId, // 角色id ,
+              status: num // 审核状态 1：审核通过 2：审核拒绝
+            })
+            .then(data => {
+              console.log(data)
+              this.$toast.clear()
+              if (data.data.code == 20000) {
+                this.$toast(data.data.msg)
+                this.$router.push('/userCheck')
+              } else {
+                this.$toast(data.data.msg)
+              }
+            })
+        }
+      } else if (num == '2') {
+        this.keepAxios
+          .post(this.baseUrl.checkList + '/rest/appUser/auditingApply', {
+            applyRemark: this.message, // 审核信息 ,
+            deptId: this.buMenId, // 分配部门id ,
+            registerApplyId: this.obj.id, // 申请数据id ,
+            roleId: this.userId, // 角色id ,
+            status: num // 审核状态 1：审核通过 2：审核拒绝
+          })
+          .then(data => {
+            console.log(data)
+            this.$toast.clear()
+            if (data.data.code == 20000) {
+              this.$toast(data.data.msg)
+              this.$router.push('/userCheck')
+            } else {
+              this.$toast(data.data.msg)
+            }
+          })
+      }
     },
     abc(id) {
       console.log(id.target.value)
@@ -202,6 +225,14 @@ export default {
       /deep/.vue-treeselect__control {
         width: 200px;
         height: 35px;
+      }
+      #userQX {
+        width: 198px;
+        height: 38px;
+        font-size: 16px;
+        border-radius: 6px;
+        border-color: #dcdcdc;
+        background: #fff;
       }
     }
   }

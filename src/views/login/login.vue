@@ -51,7 +51,7 @@
       </div>
       <!-- 注册&忘记密码 -->
       <div class="res">
-        <a @click="$router.push('/introduce')">注册成为iguard物管平台用户></a>
+        <a @click="$router.push('/introduce')">注册成为i-Guard物管平台用户></a>
       </div>
     </div>
   </div>
@@ -107,8 +107,13 @@ export default {
     //     url: 'https://test.mallmis.com/v1/rest/wxserver/getOpenid',
     //     params: { code: code }
     //   }).then(data => {
-    //     localStorage.setItem('openid', data.data.result)
-    //     // this.comparison(data.data.result)
+    //     if (data.data.result.code == 50000) {
+    //       window.localStorage.clear()
+    //       window.location.reload()
+    //     } else {
+    //       localStorage.setItem('openid', data.data.result)
+    //       // this.comparison(data.data.result)
+    //     }
     //   })
     // }
   },

@@ -81,7 +81,7 @@
               <div class="flex col">
                 <span>事件状态</span>
                 <span>
-                  <i class="red">未完成点</i>/
+                  <i class="red">未完成数</i>/
                   <i>总设备数</i>(
                   <i class="red">{{item.patrolPointIdsNoCount}}</i>/
                   <i>{{item.deviceIdsCount}}</i>)
@@ -111,12 +111,21 @@
                 <span>起止时间</span>
                 <span>{{item.startTime|timeFilter('ymdhm')}}~{{item.endTime|timeFilter('ymdhm')}}</span>
               </div>
-              <div class="flex col">
+              <div class="flex col" v-if="item.status == '4'">
+                <span>事件状态</span>
+                <span style="color:green">
+                  已分配
+                  (
+                  <i>总设备数</i>：
+                  <i>{{item.deviceIdsCount}}</i>)
+                </span>
+              </div>
+              <div class="flex col" v-else>
                 <span>事件状态</span>
                 <span style="color:green">
                   已完成
                   (
-                  <i>巡更点数</i>：
+                  <i>总设备数</i>：
                   <i>{{item.deviceIdsCount}}</i>)
                 </span>
               </div>
@@ -159,7 +168,7 @@
               <div class="flex col" @click.stop="sign1(item.id,item.endTime,checkedFlag)">
                 <span>事件状态</span>
                 <span>
-                  <i class="red">未完成点</i>/
+                  <i class="red">未完成数</i>/
                   <i>总设备数</i>(
                   <i class="red">{{item.patrolPointIdsNoCount}}</i>/
                   <i>{{item.deviceIdsCount}}</i>)

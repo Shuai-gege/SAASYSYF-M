@@ -44,8 +44,8 @@
             <div class="keep flex_r">
               <a @click="checkDetails(item.deviceId)" v-if="item.status == '2'">查看详情</a>
               <!-- 查看详情 -->
-              <span class="renLianRed" v-if="item.deviceResult == '0'">设备状态</span>
-              <span class="renLianGreen" v-else-if="item.deviceResult == '1'">设备状态</span>
+              <span class="renLianRed" v-if="item.deviceResult == '1'">设备状态</span>
+              <span class="renLianGreen" v-else-if="item.deviceResult == '0'">设备状态</span>
               <span v-else-if="item.deviceResult == null">设备状态</span>
               <!-- <span>设备状态</span> -->
               <span class="renLianRed" v-if="item.faceCheck == '3'">人脸核验</span>

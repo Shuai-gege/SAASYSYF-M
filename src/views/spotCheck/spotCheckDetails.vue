@@ -165,6 +165,9 @@
         </div>
         <div class="num5000Btn">
           <van-button color="#a48f36" @click="paiZhao">本次签到需要人脸核验</van-button>
+          <!-- <van-uploader>
+            <van-button icon="plus" type="primary">上传文件</van-button>
+          </van-uploader>-->
         </div>
       </van-popup>
     </div>
@@ -367,7 +370,6 @@ export default {
     }
 
     this.taskIds = localStorage.getItem('taskDetailId')
-    this.WXInit()
     this.obj = getvl('event')
     this.overTime = localStorage.getItem('time')
     localStorage.setItem('keepWatchId', this.$route.query.id)
@@ -391,34 +393,6 @@ export default {
     }
   },
   methods: {
-    WXInitConfig(WxToken) {
-      wx.config({
-        debug: false,
-        appId: WxToken.appId,
-        timestamp: WxToken.timestamp,
-        nonceStr: WxToken.nonceStr,
-        signature: WxToken.signature,
-        jsApiList: ['scanQRCode', 'chooseImage', 'getLocalImgData']
-      })
-      // error callback
-      wx.error(function(result) {
-        console.log('WX INIT ERROR:', result, 'color: red; font-size: 20px')
-      })
-      // ready callback
-      wx.ready(function() {})
-    },
-    WXInit() {
-      let WxToken = {}
-      WXConfigApi(window.location.href.split('#')[0])
-        // url: window.location.href.split('#')[0],
-        .then(response => {
-          WxToken = response
-          this.WXInitConfig(WxToken)
-        })
-        .catch(error => {
-          console.log(error)
-        })
-    },
     mescrollInit(mescroll) {
       this.mescroll = mescroll // 如果this.mescroll对象没有使用到,则mescrollInit可以不用配置
     },

@@ -8,8 +8,8 @@ let router = new Router({
             name: 'home',
             component: resolve => (require(["../src/views/Home/Home.vue"], resolve)),
             meta: {
-                ifShow_FootBar: true,
-                title: localStorage.getItem("userName") + "工作看板",
+                ifShow_FootBar: true, //是否展示下方tab导航
+                title: localStorage.getItem("userName") + "工作看板", //页面头部文字
             }
         },
         {

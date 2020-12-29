@@ -1,7 +1,8 @@
 <template>
   <div class="box">
-    <van-nav-bar title="巡更任务" left-text="首页" @click-left="onClickLeft" left-arrow></van-nav-bar>
-    <div class="con">
+    <van-nav-bar title="创建企业" left-text="首页" @click-left="onClickLeft" left-arrow></van-nav-bar>
+    <!-- 创建企业之前 -->
+    <div class="con" v-if="flag">
       <van-form @submit="onSubmit">
         <!-- 省市 -->
         <van-field
@@ -48,6 +49,16 @@
         </div>
       </van-form>
     </div>
+    <!-- 注册完成后 -->
+    <div class="hou" v-else>
+      <div class="title flex_c">
+        <div>您已注册成功，可点击完成跳转登录页登陆。</div>
+      </div>
+      <!-- 按钮 -->
+      <div class="btn flex_c">
+        <van-button type="primary" size="large" color="#1888F9" @click="$router.push('/login')">完成</van-button>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -77,11 +88,15 @@ export default {
         { id: '009', text: '政府' },
         { id: '010', text: '其他' }
       ],
-      obj: JSON.parse(this.$route.query.obj)
+      obj: JSON.parse(this.$route.query.obj),
+      flag: true
     }
   },
   mounted() {
     console.log(this.obj)
+    if (this.$route.query.flag != undefined) {
+      this.flag = this.$route.query.flag
+    }
   },
   methods: {
     // 反回上一级
@@ -105,13 +120,15 @@ export default {
                 password: this.obj.password,
                 faceImg: this.obj.faceImg,
                 phone: this.obj.phone,
-                userName: this.obj.userName
+                userName: this.obj.userName,
+                uid: this.$cookieStore.getCookie('uid')
               })
               .then(data => {
                 console.log(data)
                 if (data.data.code == 20000) {
                   this.$toast(data.data.msg)
-                  this.$router.push('/login')
+                  // this.$router.push('/login')
+                  this.flag = false
                 } else {
                   this.$toast(data.data.msg)
                 }
@@ -153,6 +170,21 @@ export default {
   background-image: linear-gradient(#fff, rgb(9, 63, 112));
   .con {
     padding-top: 100px;
+  }
+  .hou {
+    .title {
+      padding-top: 85px;
+      div {
+        width: 300px;
+      }
+    }
+    .btn {
+      margin-top: 70px;
+      /deep/.van-button--large {
+        width: 85%;
+        border-radius: 10px;
+      }
+    }
   }
 }
 </style>

@@ -1,7 +1,14 @@
 <template>
   <div class="box">
-    <div class="title" v-if="flag1">请填写个人账号信息</div>
-    <div class="title" v-else>您还未加入任何企业</div>
+    <van-nav-bar
+      title="账号信息"
+      left-text="返回"
+      left-arrow
+      :fixed="true"
+      @click-left="$router.push('/introduce')"
+    />
+    <div class="title" v-if="flag1 ">请填写个人账号信息</div>
+    <div class="title" v-else-if="flag1 ||!regObj.uid">您还未加入任何企业</div>
     <!-- 填写注册信息 -->
     <div class="con" v-if="flag1">
       <van-form @submit="onSubmit" style="padding:15px;">
@@ -75,9 +82,15 @@
     <div class="step" v-else>
       <!-- 按钮 -->
       <div class="btn">
-        <van-button type="primary" size="large" color="#64A5DC" @click="apply">申请加入已有企业</van-button>
-        <van-button type="primary" size="large" color="#64A5DC" @click="setUp">创建新的企业</van-button>
-        <van-button type="primary" size="large" color="#64A5DC" @click="flag1 = true">上一步</van-button>
+        <van-button
+          type="primary"
+          size="large"
+          color="#1888F9"
+          @click="apply"
+          v-if="!regObj.uid"
+        >申请加入已有企业</van-button>
+        <van-button type="primary" size="large" color="#1888F9" @click="setUp">创建新的企业</van-button>
+        <van-button type="primary" size="large" color="#1888F9" @click="flag1 = true">上一步</van-button>
       </div>
     </div>
   </div>
@@ -107,7 +120,8 @@ export default {
         openId: localStorage.getItem('openid'),
         password: '',
         phone: '',
-        userName: ''
+        userName: '',
+        uid: this.$cookieStore.getCookie('uid')
       }
     }
   },
@@ -145,9 +159,9 @@ export default {
       let img = new Image()
       img.src = file.content // 指定图片的DataURL(图片的base64编码数据)
       img.onload = () => {
-        canvas.width = 400
-        canvas.height = 300
-        context.drawImage(img, 0, 0, 400, 300)
+        canvas.width = 200
+        canvas.height = 400
+        context.drawImage(img, 0, 0, 200, 400)
         file.content = canvas.toDataURL(file.file.type, 0.92) // 0.92为默认压缩质量
         let files = this.dataURLtoFile(file.content, file.file.name)
         const data = new FormData()
@@ -193,7 +207,11 @@ export default {
       this.axios
         .get('/rest/wxserver/checkUser', { params: { phone: this.tel } })
         .then(data => {
-          if (data == true) {
+          if (
+            (data == true && this.$cookieStore.getCookie('uid') == '') ||
+            this.$cookieStore.getCookie('uid') == null ||
+            this.$cookieStore.getCookie('uid') == undefined
+          ) {
             this.$toast('此手机号已注册')
             this.flag = false
           } else {
@@ -261,6 +279,7 @@ export default {
 <style lang='less' scoped>
 .box {
   min-height: 100vh;
+  padding-top: 45px;
   color: black;
   font-size: 14px;
   background-image: linear-gradient(#fff, rgb(9, 63, 112));
@@ -285,8 +304,12 @@ export default {
     .btn {
       margin-top: 100px;
       /deep/.van-button--large {
-        margin-top: 50px;
         border-radius: 10px;
+        width: 85%;
+        height: 49px;
+        display: block;
+        margin: 0 auto;
+        margin-top: 50px;
       }
     }
   }

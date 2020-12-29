@@ -7,7 +7,17 @@ import '@/permission';
 import {
     WXInit
 } from '@/common/wx_config';
-// 全局引入axios
+import {
+    setCookie,
+    getCookie,
+    delCookie
+} from './common/cookie'
+Vue.prototype.$cookieStore = {
+        setCookie,
+        getCookie,
+        delCookie
+    }
+    // 全局引入axios
 import axios from "axios";
 Vue.prototype.keepAxios = axios
     // 电子签名
@@ -57,7 +67,6 @@ Vue.config.productionTip = false;
 // console.log("mian中打印的变量", process.env)
 // console.log(process.env.BASE_URL)//这些无用，只是搞着玩
 
-WXInit();
 
 new Vue({
     router,
