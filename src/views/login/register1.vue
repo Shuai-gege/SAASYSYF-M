@@ -207,11 +207,7 @@ export default {
       this.axios
         .get('/rest/wxserver/checkUser', { params: { phone: this.tel } })
         .then(data => {
-          if (
-            (data == true && this.$cookieStore.getCookie('uid') == '') ||
-            this.$cookieStore.getCookie('uid') == null ||
-            this.$cookieStore.getCookie('uid') == undefined
-          ) {
+          if (data == true && !this.$cookieStore.getCookie('uid')) {
             this.$toast('此手机号已注册')
             this.flag = false
           } else {
